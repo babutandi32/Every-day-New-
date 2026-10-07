@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EVERY DAY NEW — Shop • Follow • Scratch • Win</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080808;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 80% 10%,#c49a3a22,transparent 35%),radial-gradient(circle at 15% 90%,#fff10a,transparent 25%);pointer-events:none}
+.app{max-width:480px;min-height:100vh;margin:auto;padding:20px 18px 28px;display:flex;flex-direction:column;position:relative}
+.logo{text-align:center;margin:25px 0 8px;letter-spacing:5px;font-weight:900;font-size:27px}.gold{color:#d8b45a}.tag{text-align:center;color:#aaa;font-size:13px;letter-spacing:2px}
+.progress{display:flex;gap:5px;margin:25px 0}.bar{height:3px;flex:1;background:#333;border-radius:9px}.bar.on{background:#d8b45a}
+.screen{display:none;flex:1;animation:up .35s ease}.screen.active{display:flex;flex-direction:column}@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero{margin-top:55px;text-align:center}.hero h1{font-size:44px;line-height:.95;margin:0 0 18px}.hero p{color:#aaa;line-height:1.6}
+button{width:100%;border:0;border-radius:14px;padding:17px;margin-top:18px;font-size:16px;font-weight:800;letter-spacing:.5px;background:#fff;color:#111}button.goldbtn{background:linear-gradient(135deg,#f2d37a,#a97b24);color:#090909}
+.igbox,.formbox,.rewardbox{margin-top:35px;background:#111;border:1px solid #292929;border-radius:24px;padding:25px;box-shadow:0 15px 50px #0008}.igicon{font-size:52px;text-align:center}.handle{text-align:center;font-size:24px;font-weight:900;margin:12px 0}.hint{text-align:center;color:#999;font-size:13px;line-height:1.5}
+label{display:block;margin:15px 0 8px;color:#ccc;font-size:13px;font-weight:700}input{width:100%;background:#090909;border:1px solid #383838;color:#fff;border-radius:12px;padding:16px;font-size:18px;outline:none}input:focus{border-color:#d8b45a}
+.back{background:transparent;color:#aaa;border:1px solid #333}.mini{text-align:center;color:#666;font-size:12px;margin-top:16px}
+.scratch{height:245px;margin-top:24px;border-radius:22px;position:relative;overflow:hidden;background:#f1f1f1}.win{position:absolute;inset:0;color:#111;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:31px;padding:20px}.win small{display:block;font-size:13px;margin-bottom:10px;letter-spacing:2px}.scratch canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.foot{text-align:center;color:#555;font-size:11px;margin-top:auto;padding-top:24px}
+</style>
+</head>
+<body><main class="app">
+<div class="logo">EVERY <span class="gold">DAY</span> NEW</div>
+<div class="tag">SHOP • FOLLOW • SCRATCH • WIN</div>
+<div class="progress"><i class="bar on"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i></div>
+
+<section id="s1" class="screen active">
+<div class="hero"><div style="font-size:65px">✦</div><h1>YOUR STYLE.<br><span class="gold">YOUR REWARD.</span></h1><p>Shop your look. Follow us. Scratch your card.<br>Something special is waiting.</p></div>
+<button class="goldbtn" onclick="go(2)">START</button>
+</section>
+
+<section id="s2" class="screen">
+<div class="igbox"><div class="igicon">◎</div><h2 style="text-align:center">FOLLOW EVERY DAY NEW</h2><div class="handle">@everydaynew.in</div><div class="hint">Follow our Instagram for new drops, outfits & offers.</div>
+<button class="goldbtn" onclick="window.open('https://instagram.com/everydaynew.in','_blank')">FOLLOW ON INSTAGRAM ↗</button>
+<button class="back" onclick="go(3)">I FOLLOWED — CONTINUE</button></div>
+</section>
+
+<section id="s3" class="screen">
+<div class="formbox"><h2>Let's get your reward.</h2><label>WHATSAPP NUMBER</label><input id="phone" inputmode="numeric" maxlength="10" placeholder="10 digit number"><button class="goldbtn" onclick="nextPhone()">CONTINUE</button><button class="back" onclick="go(2)">BACK</button></div>
+</section>
+
+<section id="s4" class="screen">
+<div class="formbox"><h2>What was your purchase?</h2><label>PURCHASE AMOUNT</label><input id="amt" inputmode="decimal" placeholder="₹ 1,299"><button class="goldbtn" onclick="startScratch()">GET MY SCRATCH CARD</button><button class="back" onclick="go(3)">BACK</button></div>
+</section>
+
+<section id="s5" class="screen">
+<div style="text-align:center;margin-top:25px"><h2>Scratch to reveal</h2><p style="color:#999">Use your finger on the card 👇</p></div>
+<div class="scratch" id="scratch"><div class="win"><div><small>EVERY DAY NEW REWARD</small><span id="reward">10% OFF</span></div></div><canvas id="cv"></canvas></div>
+<div id="done" style="display:none"><button class="goldbtn" onclick="share()">SHARE REWARD ON WHATSAPP</button></div>
+<div class="mini">Reward is based on your purchase amount.</div>
+</section>
+<div class="foot">EVERY DAY NEW © 2026</div>
+</main>
+<script>
+let step=1,phone="",amount=0,reward="";
+function go(n){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById('s'+n).classList.add('active');document.querySelectorAll('.bar').forEach((x,i)=>x.classList.toggle('on',i<n));step=n;scrollTo(0,0)}
+function nextPhone(){phone=document.getElementById('phone').value.replace(/\D/g,'');if(phone.length!==10)return alert('Please enter a valid 10 digit WhatsApp number.');go(4)}
+function startScratch(){amount=Number(document.getElementById('amt').value.replace(/,/g,''));if(!amount||amount<1)return alert('Please enter your purchase amount.');reward=amount>=5000?'FREE GIFT':amount>=2000?'₹200 OFF':amount>=1000?'10% OFF':amount>=500?'5% OFF':'THANK YOU';document.getElementById('reward').textContent=reward;go(5);setTimeout(scratchSetup,50)}
+function scratchSetup(){let c=document.getElementById('cv'),r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=r.height*d;let x=c.getContext('2d');x.scale(d,d);x.fillStyle='#aaa';x.fillRect(0,0,r.width,r.height);x.fillStyle='#666';x.font='900 24px Arial';x.textAlign='center';x.fillText('SCRATCH HERE',r.width/2,r.height/2);let count=0;function erase(e){e.preventDefault();let q=e.touches?e.touches[0]:e,rr=c.getBoundingClientRect(),px=q.clientX-rr.left,py=q.clientY-rr.top;x.globalCompositeOperation='destination-out';x.beginPath();x.arc(px,py,27,0,Math.PI*2);x.fill();if(++count>35){c.style.opacity='0';document.getElementById('done').style.display='block'}}c.onpointerdown=erase;c.onpointermove=e=>{if(e.buttons)erase(e)};c.ontouchmove=erase}
+function share(){location.href='https://wa.me/91'+phone+'?text='+encodeURIComponent('🎉 EVERY DAY NEW — Scratch & Win\\nPurchase: ₹'+amount+'\\nReward: '+reward+'\\nShow this reward at the store.')}
+</script>
+</body></html>
